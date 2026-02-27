@@ -1,0 +1,9 @@
+build/
+cmake-build-*/
+.vs/
+.vscode/
+*.user
+.DS_Store
+Thumbs.db
+*.component
+*.vst3
