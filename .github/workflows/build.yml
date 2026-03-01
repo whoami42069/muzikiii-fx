@@ -17,8 +17,14 @@ jobs:
         run: cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_DEPLOYMENT_TARGET=12.0
       - name: Build
         run: cmake --build build --config Release
+      - name: Install AU Plugin
+        run: |
+          mkdir -p ~/Library/Audio/Plug-Ins/Components
+          cp -r "build/MuzikiiiFX_artefacts/Release/AU/Muzikiii FX.component" ~/Library/Audio/Plug-Ins/Components/
+          killall -9 AudioComponentRegistrar 2>/dev/null || true
+          sleep 2
       - name: Validate AU Plugin
-        run: auval -a || true
+        run: auval -v aufx MzFx Mzki || echo "::warning::auval validation failed - plugin may need fixes for AU hosting"
       - uses: actions/upload-artifact@v4
         with:
           name: MuzikiiiFX-AU
